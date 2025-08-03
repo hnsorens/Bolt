@@ -1,0 +1,4 @@
+out
+node_modules
+compiler/lex.yy.c
+compiler/bolt
