@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out/client",
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "types": ["vscode"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
