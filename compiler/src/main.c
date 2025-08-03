@@ -6,13 +6,31 @@
 #include "cJSON.h"
 #include "lexer.h" // You create this to match your lexer.l token structure
 
-extern Token* token_list_head;
-extern void free_token_list();
-extern void reset_token_list(); // optional: reset token list between scans
+extern LineNode* lines_root;
 
 extern int yylex(void);
 extern struct yy_buffer_state* yy_scan_string(const char* str);
 extern void yy_delete_buffer(struct yy_buffer_state*);
+void print_avl(Token* root, int depth);
+
+void print_lines_inorder(LineNode* node) {
+    if (!node) return;
+    print_lines_inorder(node->left);
+
+    printf("LINE %d:\n", node->line_number);
+    Token* tok = node->token_head;
+    while (tok) {
+        printf("\tTOKEN: %s (col %d)", tok->value, tok->column);
+        if (tok->error) {
+            printf(" [ERROR: %s]", tok->error);
+        }
+        printf("\n");
+        tok = tok->next;
+    }
+
+    print_lines_inorder(node->right);
+}
+
 
 char* read_line() {
     size_t size = 1024;
@@ -39,32 +57,43 @@ char* read_line() {
     return buffer;
 }
 
-void send_diagnostics(const char* uri, Token* tokens) {
-    cJSON* diagnostics = cJSON_CreateArray();
+void send_diagnostics_from_node(cJSON* diagnostics, LineNode* node) {
+    if (!node) return;
+    send_diagnostics_from_node(diagnostics, node->left);
 
-    for (Token* t = tokens; t; t = t->next) {
-        if (t->error) {
+    Token* tok = node->token_head;
+    while (tok) {
+        if (tok->error) {
             cJSON* diagnostic = cJSON_CreateObject();
 
             cJSON* range = cJSON_CreateObject();
             cJSON* start = cJSON_CreateObject();
             cJSON* end = cJSON_CreateObject();
 
-            cJSON_AddNumberToObject(start, "line", t->line);
-            cJSON_AddNumberToObject(start, "character", t->column);
-            cJSON_AddNumberToObject(end, "line", t->line);
-            cJSON_AddNumberToObject(end, "character", t->column + (int)strlen(t->value));
+            cJSON_AddNumberToObject(start, "line", node->line_number);
+            cJSON_AddNumberToObject(start, "character", tok->column);
+            cJSON_AddNumberToObject(end, "line", node->line_number);
+            cJSON_AddNumberToObject(end, "character", tok->column + (int)strlen(tok->value));
 
             cJSON_AddItemToObject(range, "start", start);
             cJSON_AddItemToObject(range, "end", end);
 
             cJSON_AddItemToObject(diagnostic, "range", range);
-            cJSON_AddStringToObject(diagnostic, "message", t->error);
+            cJSON_AddStringToObject(diagnostic, "message", tok->error);
             cJSON_AddNumberToObject(diagnostic, "severity", 1); // Error
 
             cJSON_AddItemToArray(diagnostics, diagnostic);
         }
+        tok = tok->next;
     }
+
+    send_diagnostics_from_node(diagnostics, node->right);
+}
+
+void send_diagnostics(const char* uri, LineNode* root) {
+    cJSON* diagnostics = cJSON_CreateArray();
+
+    send_diagnostics_from_node(diagnostics, root);
 
     cJSON* response = cJSON_CreateObject();
     cJSON_AddStringToObject(response, "uri", uri);
@@ -94,13 +123,11 @@ int main(int argc, char* argv[]) {
             cJSON* uri = cJSON_GetObjectItem(request, "uri");
 
             if (command && text && uri && strcmp(command->valuestring, "validate") == 0) {
-                // Run lexer on input string
                 struct yy_buffer_state* buf = yy_scan_string(text->valuestring);
-                yylex();  // This populates token_list_head
+                yylex();  // Populates AVL tree: lines_root
                 yy_delete_buffer(buf);
 
-                send_diagnostics(uri->valuestring, token_list_head);
-                free_token_list(); // Clear token list between runs
+                send_diagnostics(uri->valuestring, lines_root);
             } else {
                 fprintf(stderr, "{\"error\":\"Invalid request structure\"}\n");
             }
@@ -108,21 +135,17 @@ int main(int argc, char* argv[]) {
             cJSON_Delete(request);
             free(line);
         }
-    }
-    else {
-        const char* text = "7asdasd asd";
+    } else {
+        const char* text = "int a = 0;\nfloat b = 1.0;\nchar c = 'x';";
 
         struct yy_buffer_state* buf = yy_scan_string(text);
-        yylex();  // This populates token_list_head
+        yylex();  // Populates AVL tree: lines_root
         yy_delete_buffer(buf);
 
-        Token* current = token_list_head;
-        while(current)
-        {
-            printf("%s %d %d\n", current->value, current->column, current->line);
-            current = current->next;
-        }
+        // Print all lines and tokens
+        print_lines_inorder(lines_root);
     }
 
     return 0;
 }
+
