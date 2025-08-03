@@ -44,6 +44,7 @@ compilerProcess.stdout?.on('data', (data: Buffer) => {
                 uri: response.uri,
                 diagnostics: response.diagnostics
             });
+            console.error(response.diagnostics);
         }
     } catch (err) {
         connection.console.error(`Failed to parse compiler output: ${err}`);

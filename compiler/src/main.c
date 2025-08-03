@@ -121,12 +121,22 @@ int main(int argc, char* argv[]) {
             cJSON* command = cJSON_GetObjectItem(request, "command");
             cJSON* text = cJSON_GetObjectItem(request, "text");
             cJSON* uri = cJSON_GetObjectItem(request, "uri");
+            cJSON* range = cJSON_GetObjectItem(request, "range");
 
             if (command && text && uri && strcmp(command->valuestring, "validate") == 0) {
-                struct yy_buffer_state* buf = yy_scan_string(text->valuestring);
-                yylex();  // Populates AVL tree: lines_root
-                yy_delete_buffer(buf);
+                if (range)
+                {
+                    struct yy_buffer_state* buf = yy_scan_string(text->valuestring);
+                    yylex();  // Populates AVL tree: lines_root
+                    yy_delete_buffer(buf);
 
+                }
+                else {
+                    struct yy_buffer_state* buf = yy_scan_string(text->valuestring);
+                    yylex();  // Populates AVL tree: lines_root
+                    yy_delete_buffer(buf);
+
+                }
                 send_diagnostics(uri->valuestring, lines_root);
             } else {
                 fprintf(stderr, "{\"error\":\"Invalid request structure\"}\n");
