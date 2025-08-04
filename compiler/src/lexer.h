@@ -16,15 +16,14 @@ typedef struct Token {
 } Token;
 
 typedef struct LineNode {
-    int line_number;
-
     Token* token_head;
     Token* token_tail;
 
     struct LineNode* left;
     struct LineNode* right;
+    struct LineNode* parent;
 
-    struct LineNode* prev;  // doubly linked list of lines
+    struct LineNode* prev;
     struct LineNode* next;
 
     int height;

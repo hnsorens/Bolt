@@ -17,15 +17,14 @@ typedef struct Token {
 } Token;
 
 typedef struct LineNode {
-    int line_number;
-
     Token* token_head;
     Token* token_tail;
 
     struct LineNode* left;
     struct LineNode* right;
+    struct LineNode* parent;
 
-    struct LineNode* prev;  // doubly linked list of lines
+    struct LineNode* prev;
     struct LineNode* next;
 
     int height;
@@ -46,12 +45,13 @@ void update_height_and_size(LineNode* n) {
     n->subtree_size = 1 + size(n->left) + size(n->right);
 }
 
-// AVL rotations
 LineNode* rotate_right(LineNode* y) {
     LineNode* x = y->left;
-    LineNode* T2 = x->right;
+    y->left = x->right;
+    if (x->right) x->right->parent = y;
     x->right = y;
-    y->left = T2;
+    x->parent = y->parent;
+    y->parent = x;
     update_height_and_size(y);
     update_height_and_size(x);
     return x;
@@ -59,17 +59,18 @@ LineNode* rotate_right(LineNode* y) {
 
 LineNode* rotate_left(LineNode* x) {
     LineNode* y = x->right;
-    LineNode* T2 = y->left;
+    x->right = y->left;
+    if (y->left) y->left->parent = x;
     y->left = x;
-    x->right = T2;
+    y->parent = x->parent;
+    x->parent = y;
     update_height_and_size(x);
     update_height_and_size(y);
     return y;
 }
 
 int get_balance(LineNode* n) {
-    if (!n) return 0;
-    return height(n->left) - height(n->right);
+    return n ? height(n->left) - height(n->right) : 0;
 }
 
 LineNode* balance_node(LineNode* node) {
@@ -89,114 +90,122 @@ LineNode* balance_node(LineNode* node) {
     return node;
 }
 
-// Helper: create a new line node
-LineNode* create_line_node(int line_number) {
-    LineNode* node = (LineNode*)malloc(sizeof(LineNode));
-    node->line_number = line_number;
-    node->token_head = NULL;
-    node->token_tail = NULL;
-    node->left = node->right = NULL;
-    node->prev = node->next = NULL;
+LineNode* create_line_node() {
+    LineNode* node = malloc(sizeof(LineNode));
+    memset(node, 0, sizeof(LineNode));
     node->height = 1;
     node->subtree_size = 1;
     return node;
 }
 
-// Insert new_line into linked list before 'next_line'
-// If next_line is NULL, insert at tail
-void insert_line_into_list(LineNode* new_line, LineNode* next_line) {
+void insert_into_linked_list(LineNode* new_line, LineNode* next_line) {
     if (!lines_head) {
-        // First node ever
         lines_head = lines_tail = new_line;
-        new_line->prev = new_line->next = NULL;
     } else if (!next_line) {
-        // Insert at tail
         new_line->prev = lines_tail;
-        new_line->next = NULL;
         lines_tail->next = new_line;
         lines_tail = new_line;
     } else {
-        // Insert before next_line
         new_line->next = next_line;
         new_line->prev = next_line->prev;
-        if (next_line->prev)
-            next_line->prev->next = new_line;
-        else
-            lines_head = new_line;
+        if (next_line->prev) next_line->prev->next = new_line;
+        else lines_head = new_line;
         next_line->prev = new_line;
     }
 }
 
-// Insert a line node with given line_number into AVL tree rooted at root
-// Return new root after insertion
-LineNode* insert_line_node(LineNode* root, LineNode* new_line) {
+LineNode* insert_line_by_index(LineNode* root, LineNode* new_node, int index, int* inserted_index) {
+    int left_size = root ? size(root->left) : 0;
     if (!root) {
-        // Insert into linked list in correct position:
-        // since this is the only node here, just insert normally
-        insert_line_into_list(new_line, NULL);
-        return new_line;
-    }
-
-    if (new_line->line_number < root->line_number) {
-        root->left = insert_line_node(root->left, new_line);
-    } else if (new_line->line_number > root->line_number) {
-        root->right = insert_line_node(root->right, new_line);
+        insert_into_linked_list(new_node, NULL);
+        if (inserted_index) *inserted_index = 0;
+        return new_node;
+    } else if (index <= left_size) {
+        root->left = insert_line_by_index(root->left, new_node, index, inserted_index);
+        if (root->left) root->left->parent = root;
+        if (inserted_index && *inserted_index == left_size)
+            insert_into_linked_list(new_node, root);
     } else {
-        // Line number already exists — free new_line and return root
-        free(new_line);
-        return root;
+        root->right = insert_line_by_index(root->right, new_node, index - left_size - 1, inserted_index);
+        if (root->right) root->right->parent = root;
+        if (inserted_index && *inserted_index == left_size + 1)
+            insert_into_linked_list(new_node, root->next);
     }
-
-    // Balance AVL tree
-    root = balance_node(root);
-    return root;
+    return balance_node(root);
 }
 
-// Search line node by line_number in AVL tree
-LineNode* find_line_node(LineNode* root, int line_number) {
+LineNode* get_line_by_index(LineNode* root, int index) {
     if (!root) return NULL;
-    if (line_number == root->line_number)
-        return root;
-    else if (line_number < root->line_number)
-        return find_line_node(root->left, line_number);
-    else
-        return find_line_node(root->right, line_number);
+    int left_size = size(root->left);
+    if (index < left_size) return get_line_by_index(root->left, index);
+    if (index == left_size) return root;
+    return get_line_by_index(root->right, index - left_size - 1);
 }
 
-// Get or create line node for given line_index
-LineNode* get_or_create_line(int line_index) {
-    LineNode* node = find_line_node(lines_root, line_index);
-    if (node) return node;
-
-    // Not found, create new
-    LineNode* new_line = create_line_node(line_index);
-
-    // Insert into AVL tree (this will also insert into linked list)
-    lines_root = insert_line_node(lines_root, new_line);
-
-    return new_line;
+LineNode* min_node(LineNode* node) {
+    while (node->left) node = node->left;
+    return node;
 }
 
-// Add token to line
-void add_token(const char* type, const char* value, int line_idx, int col, const char* error) {
-    Token* t = (Token*)malloc(sizeof(Token));
+LineNode* remove_line_by_index(LineNode* root, int index) {
+    if (!root) return NULL;
+    int left_size = size(root->left);
+
+    if (index < left_size) {
+        root->left = remove_line_by_index(root->left, index);
+    } else if (index > left_size) {
+        root->right = remove_line_by_index(root->right, index - left_size - 1);
+    } else {
+        if (root->prev) root->prev->next = root->next;
+        else lines_head = root->next;
+        if (root->next) root->next->prev = root->prev;
+        else lines_tail = root->prev;
+        Token* tok = root->token_head;
+        while (tok) {
+            Token* next = tok->next;
+            free(tok->value);
+            if (tok->error) free(tok->error);
+            free(tok);
+            tok = next;
+        }
+        if (!root->left || !root->right) {
+            LineNode* temp = root->left ? root->left : root->right;
+            free(root);
+            return temp;
+        } else {
+            LineNode* min = min_node(root->right);
+            root->token_head = min->token_head;
+            root->token_tail = min->token_tail;
+            root->right = remove_line_by_index(root->right, 0);
+        }
+    }
+    return balance_node(root);
+}
+
+void add_token(const char* type, const char* value, int line_index, int col, const char* error) {
+    Token* t = malloc(sizeof(Token));
     t->type = type;
     t->value = strdup(value);
     t->column = col;
-    t->length = (int)strlen(value);
+    t->length = strlen(value);
     t->error = error ? strdup(error) : NULL;
     t->next = NULL;
     t->prev = NULL;
 
-    LineNode* line_obj = get_or_create_line(line_idx);
-    t->line = line_obj;
+    LineNode* line = get_line_by_index(lines_root, line_index);
+    if (!line) {
+        line = create_line_node();
+        int inserted_index = line_index;
+        lines_root = insert_line_by_index(lines_root, line, line_index, &inserted_index);
+    }
+    t->line = line;
 
-    if (!line_obj->token_head) {
-        line_obj->token_head = line_obj->token_tail = t;
+    if (!line->token_head) {
+        line->token_head = line->token_tail = t;
     } else {
-        line_obj->token_tail->next = t;
-        t->prev = line_obj->token_tail;
-        line_obj->token_tail = t;
+        line->token_tail->next = t;
+        t->prev = line->token_tail;
+        line->token_tail = t;
     }
 }
 
@@ -210,7 +219,6 @@ int curr_col = 0;
 #define ADD_ERROR_TOKEN(MSG) \
     add_token("ERROR", yytext, curr_line, curr_col, MSG); \
     curr_col += yyleng;
-
 %}
 
 %option noyywrap
@@ -231,7 +239,6 @@ int curr_col = 0;
 "else"    { ADD_TOKEN("KEYWORD_ELSE"); }
 "while"   { ADD_TOKEN("KEYWORD_WHILE"); }
 "for"     { ADD_TOKEN("KEYWORD_FOR"); }
-
 
 0[xX][0-9a-fA-F]+      { ADD_TOKEN("HEX_NUMBER"); }
 0[bB][01]+             { ADD_TOKEN("BINARY_NUMBER"); }
@@ -254,7 +261,7 @@ int curr_col = 0;
 
 <COMMENT>{
     "*/"   { BEGIN(INITIAL); ADD_TOKEN("MULTILINE_COMMENT_END"); }
-    .|\n   { /* skip comment content */ }
+    .|\n   { }
 }
 
 "=="      { ADD_TOKEN("OP_EQ"); }
