@@ -149,36 +149,63 @@ LineNode* min_node(LineNode* node) {
 
 LineNode* remove_line_by_index(LineNode* root, int index) {
     if (!root) return NULL;
+
     int left_size = size(root->left);
 
     if (index < left_size) {
         root->left = remove_line_by_index(root->left, index);
+        if (root->left) root->left->parent = root;
     } else if (index > left_size) {
         root->right = remove_line_by_index(root->right, index - left_size - 1);
+        if (root->right) root->right->parent = root;
     } else {
-        if (root->prev) root->prev->next = root->next;
-        else lines_head = root->next;
-        if (root->next) root->next->prev = root->prev;
-        else lines_tail = root->prev;
-        Token* tok = root->token_head;
-        while (tok) {
-            Token* next = tok->next;
-            free(tok->value);
-            if (tok->error) free(tok->error);
-            free(tok);
-            tok = next;
-        }
+        // This is the node to remove
+
+        // Case 1: One or no child
         if (!root->left || !root->right) {
-            LineNode* temp = root->left ? root->left : root->right;
+            // Unlink from linked list now
+            if (root->prev) root->prev->next = root->next;
+            else lines_head = root->next;
+            if (root->next) root->next->prev = root->prev;
+            else lines_tail = root->prev;
+
+            // Free tokens
+            Token* tok = root->token_head;
+            while (tok) {
+                Token* next = tok->next;
+                free(tok->value);
+                if (tok->error) free(tok->error);
+                free(tok);
+                tok = next;
+            }
+
+            LineNode* child = root->left ? root->left : root->right;
+            if (child) child->parent = root->parent;
+
             free(root);
-            return temp;
-        } else {
-            LineNode* min = min_node(root->right);
-            root->token_head = min->token_head;
-            root->token_tail = min->token_tail;
-            root->right = remove_line_by_index(root->right, 0);
+            return child;
         }
+
+        // Case 2: Two children
+        // Find inorder successor (min in right subtree)
+        LineNode* successor = root->right;
+        while (successor->left) successor = successor->left;
+
+        // Swap successor's tokens with current node's tokens
+        // (We only swap token_head and token_tail pointers)
+        Token* temp_head = root->token_head;
+        Token* temp_tail = root->token_tail;
+        root->token_head = successor->token_head;
+        root->token_tail = successor->token_tail;
+        successor->token_head = temp_head;
+        successor->token_tail = temp_tail;
+
+        // Now recursively delete the successor node (which now holds the original tokens of root)
+        root->right = remove_line_by_index(root->right, 0);
+        if (root->right) root->right->parent = root;
     }
+
+    update_height_and_size(root);
     return balance_node(root);
 }
 

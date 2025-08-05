@@ -199,7 +199,6 @@ int main(int argc, char* argv[]) {
                     int size = cJSON_GetArraySize(contentChanges);
                     for (int i = 0; i < size; i++)
                     {
-                        fprintf(stderr, "Got here 1"); fflush(stderr);
                         cJSON* change = cJSON_GetArrayItem(contentChanges, i);
                         cJSON* text = cJSON_GetObjectItem(change, "text");
                         cJSON* range = cJSON_GetObjectItem(change, "range");
@@ -210,15 +209,14 @@ int main(int argc, char* argv[]) {
                         int start_char = cJSON_GetObjectItem(start, "character")->valueint;
                         int end_line_number = cJSON_GetObjectItem(end, "line")->valueint;
                         int end_char = cJSON_GetObjectItem(end, "character")->valueint;
-        fprintf(stderr, "Got here 2"); fflush(stderr);
                         LineNode* start_line = get_line_by_index(root, start_line_number);
                         LineNode* end_line = get_line_by_index(root, end_line_number);
-        
+
                         Token* token_start = start_line->token_head;
                         Token* token_end = end_line->token_tail;
         
                         Token* token_before = NULL;
-                        Token* token_after = NULL; fprintf(stderr, "Got here 3"); fflush(stderr);
+                        Token* token_after = NULL;
                         // Locate token_before and token_start
                         for (Token* t = start_line->token_head; t; t = t->next) {
                             int token_start_col = t->column;
@@ -239,8 +237,7 @@ int main(int argc, char* argv[]) {
         
                             token_before = t;
                             token_start = NULL;
-                        }
-                  fprintf(stderr, "Got here 4"); fflush(stderr);      
+                        }   
                         // Locate token_after and token_end
                         for (Token* t = end_line->token_tail; t; t = t->prev) {
                             int token_start_col = t->column;
@@ -265,24 +262,16 @@ int main(int argc, char* argv[]) {
 
 
                         int token_start_length = (token_start ? start_char - token_start->column : 0);
-                        fprintf(stderr, "Got here 6"); fflush(stderr);
                         int token_end_length = (token_end ? token_end->column + token_end->length - end_char : 0);
-                        fprintf(stderr, "Got here 6"); fflush(stderr);
                         int text_length = strlen(text->valuestring);
-                        fprintf(stderr, "Got here 6"); fflush(stderr);
                         int tokenize_length = token_start_length + token_end_length + text_length;
-                        fprintf(stderr, "Got here 6"); fflush(stderr);
 
                         int token_lead = token_after ? token_after->column - (token_end ? token_end->column + strlen(token_end->value) : end_char) : 0;
-                        fprintf(stderr, "Got here 6"); fflush(stderr);
         
                         char* characters = tokenize_length+1 > MAX_CHARACTER_EDIT_BUFFER ? (char*)malloc(tokenize_length+1) : character_edit_buffer;
-                        fprintf(stderr, "Got here 6"); fflush(stderr);
         
                         if (token_start_length > 0) memcpy(characters, token_start->value, token_start_length);
-                        fprintf(stderr, "Got here 6"); fflush(stderr);
                         fprintf(stderr, "TEXT: '%s'\n", characters);
-                        fprintf(stderr, "Got here 6"); fflush(stderr);
                         if (token_end_length > 0) memcpy(characters + token_start_length + text_length, token_end->value + strlen(token_end->value) - token_end_length, token_end_length);
                         fprintf(stderr, "TEXT: '%s'\n", characters);
                         memcpy(characters + token_start_length, text->valuestring, text_length);
@@ -290,7 +279,6 @@ int main(int argc, char* argv[]) {
                         characters[tokenize_length] = 0;
                         fprintf(stderr, "TEXT: '%s'\n", characters);
                         
-fprintf(stderr, "Got here 6"); fflush(stderr);
                         if (strlen(characters) == 0)
                         {
                             if (start_line_number == end_line_number)
@@ -303,7 +291,6 @@ fprintf(stderr, "Got here 6"); fflush(stderr);
                                 }
                                 if (token_after && token_before)
                                 {
-                                    fprintf(stderr, "GOOD %d\n", token_addition);
                                     token_before->next = token_after;
                                     token_after->prev = token_before;
 
@@ -334,14 +321,48 @@ fprintf(stderr, "Got here 6"); fflush(stderr);
                             }
                             else 
                             {
-                                fprintf(stderr, "REMOVING MULTIPLE LINES\n");
-                                fflush(stderr);
-                                LineNode* current = start_line->next;
-                                do
+                                int token_addition = start_char - end_char;
+                                if (!token_after && !token_before)
                                 {
-                                    root = remove_line_by_index(root, start_line_number + 1);
+                                    start_line->token_head = NULL;
+                                    start_line->token_tail = NULL;
                                 }
-                                while (current != end_line);
+                                if (token_after && !token_before)
+                                {
+                                    start_line->token_head = token_after;
+                                    start_line->token_tail = end_line->token_tail;
+
+                                    Token* current = token_after;
+                                    while (current)
+                                    {
+                                        current->column += token_addition;
+                                        current = current->next;
+                                    }
+                                }
+                                if (token_before && !token_before)
+                                {
+                                    start_line->token_tail = token_before;
+                                }
+                                if (token_before && token_after)
+                                {
+                                    token_before->next = token_after;
+                                    token_after->prev = token_before;
+                                    start_line->token_tail = end_line->token_tail;
+
+                                    Token* current = token_after;
+                                    while (current)
+                                    {
+                                        current->column += token_addition;
+                                        current = current->next;
+                                    }
+                                }
+
+                                // TODO clean up these lines properly
+                                end_line->token_head = NULL;
+                                end_line->token_tail = NULL;
+
+                                for (int i = 0; i < end_line_number - start_line_number; i++)
+                                root = remove_line_by_index(root, start_line_number + 1);
                             }
                         }
                         else 
@@ -403,38 +424,39 @@ fprintf(stderr, "Got here 6"); fflush(stderr);
                                 }
                                 else 
                                 {
-                                    if (token_before) {
-                                        // Connect token_before to the first new token
-                                        token_before->next = lines_head->token_head;
-                                        lines_head->token_head->prev = token_before;
-                                        lines_head->token_tail->next = NULL;
-                                        start_line->token_tail = lines_head->token_tail;
-                                    } 
-                                    else 
-                                    {
-                                        // If no token_before, the new tokens start the line token list
-                                        lines_head->token_head->prev = NULL;
-                                        lines_head->token_tail->next = NULL;
-                                        start_line->token_head = lines_head->token_head;
-                                        start_line->token_tail = lines_head->token_tail;
-                                    }
+                                    // if (token_before) {
+                                    //     // Connect token_before to the first new token
+                                    //     token_before->next = lines_head->token_head;
+                                    //     lines_head->token_head->prev = token_before;
+                                    //     lines_head->token_tail->next = NULL;
+                                    //     start_line->token_tail = lines_head->token_tail;
+                                    // } 
+                                    // else 
+                                    // {
+                                    //     // If no token_before, the new tokens start the line token list
+                                    //     lines_head->token_head->prev = NULL;
+                                    //     lines_head->token_tail->next = NULL;
+                                    //     start_line->token_head = lines_head->token_head;
+                                    //     start_line->token_tail = lines_head->token_tail;
+                                    // }
                     
-                                    if (token_after) 
-                                    {
-                                        // Connect token_after to the last new token
-                                        token_after->prev = lines_tail->token_tail;
-                                        lines_tail->token_tail->next = token_after;
-                                        lines_tail->token_head->prev = NULL;
-                                        end_line->token_head = lines_tail->token_head;
-                                    } 
-                                    else 
-                                    {
-                                        // If no token_after, the new tokens end the line token list
-                                        lines_tail->token_head->prev = NULL;
-                                        lines_tail->token_tail->next = NULL;
-                                        end_line->token_head = lines_tail->token_head;
-                                        end_line->token_tail = lines_tail->token_tail;
-                                    }
+                                    // if (token_after) 
+                                    // {
+                                    //     // Connect token_after to the last new token
+                                    //     token_after->prev = lines_tail->token_tail;
+                                    //     lines_tail->token_tail->next = token_after;
+                                    //     lines_tail->token_head->prev = NULL;
+                                    //     end_line->token_head = lines_tail->token_head;
+                                    // } 
+                                    // else 
+                                    // {
+                                    //     // If no token_after, the new tokens end the line token list
+                                    //     lines_tail->token_head->prev = NULL;
+                                    //     lines_tail->token_tail->next = NULL;
+                                    //     end_line->token_head = lines_tail->token_head;
+                                    //     end_line->token_tail = lines_tail->token_tail;
+                                    // }
+                                    root = remove_line_by_index(root, 1);
                                 }
                             }
                             else {
@@ -444,11 +466,11 @@ fprintf(stderr, "Got here 6"); fflush(stderr);
                                     if (token_after)
                                     {
                                         Token* current = token_after;
-                                            while (current)
-                                            {
-                                                current->column += token_addition;
-                                                current = current->next;
-                                            }
+                                        while (current)
+                                        {
+                                            current->column += token_addition;
+                                            current = current->next;
+                                        }
                                     }
                                 }
                                 else
