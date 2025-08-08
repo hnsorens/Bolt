@@ -28,51 +28,68 @@ const compilerProcess: ChildProcess = spawn(compilerPath, ['--language-server'])
 // Buffer for incoming data from process.stdin to reconstruct full LSP messages
 let inputBuffer = '';
 
-// Helper: try parse and process full messages in the buffer
-function tryProcessMessages() {
-    while (true) {
-        const headerEnd = inputBuffer.indexOf('\r\n\r\n');
-        if (headerEnd === -1) break; // incomplete headers, wait for more data
+// // Helper: try parse and process full messages in the buffer
+// function tryProcessMessages() {
+//     while (true) {
+//         const headerEnd = inputBuffer.indexOf('\r\n\r\n');
+//         if (headerEnd === -1) break; // incomplete headers, wait for more data
 
-        const headers = inputBuffer.slice(0, headerEnd).split('\r\n');
-        let contentLength = 0;
+//         const headers = inputBuffer.slice(0, headerEnd).split('\r\n');
+//         let contentLength = 0;
 
-        for (const header of headers) {
-            const parts = header.split(':');
-            if (parts[0].toLowerCase() === 'content-length') {
-                contentLength = parseInt(parts[1].trim(), 10);
-                break;
-            }
+//         for (const header of headers) {
+//             const parts = header.split(':');
+//             if (parts[0].toLowerCase() === 'content-length') {
+//                 contentLength = parseInt(parts[1].trim(), 10);
+//                 break;
+//             }
+//         }
+
+//         if (contentLength === 0) {
+//             console.error('Content-Length header missing or invalid');
+//             break;
+//         }
+
+//         const totalMessageLength = headerEnd + 4 + contentLength; // 4 = length of \r\n\r\n
+
+//         if (inputBuffer.length < totalMessageLength) break; // incomplete message body
+
+//         const jsonString = inputBuffer.slice(headerEnd + 4, totalMessageLength);
+
+//         // Remove processed message from buffer
+//         inputBuffer = inputBuffer.slice(totalMessageLength);
+
+//         try {
+//             const json = JSON.parse(jsonString);
+//             // Forward full JSON message string (without headers) to compiler stdin
+//             compilerProcess.stdin?.write(JSON.stringify(json) + '\n');
+//         } catch (err) {
+//             console.error('Failed to parse JSON:', err);
+//         }
+//     }
+// }
+
+// // Listen to stdin data, buffer it and process complete messages
+// process.stdin.on('data', (chunk) => {
+//     inputBuffer += chunk.toString();
+//     tryProcessMessages();
+// });
+
+documents.onDidChangeContent((event) => {
+    const uri = event.document.uri;
+    const fullText = event.document.getText();
+
+    // Construct the message to send to the compiler
+    const message = {
+        method: 'textDocument/didChange',
+        params: {
+            uri,
+            text: fullText
         }
+    };
 
-        if (contentLength === 0) {
-            console.error('Content-Length header missing or invalid');
-            break;
-        }
-
-        const totalMessageLength = headerEnd + 4 + contentLength; // 4 = length of \r\n\r\n
-
-        if (inputBuffer.length < totalMessageLength) break; // incomplete message body
-
-        const jsonString = inputBuffer.slice(headerEnd + 4, totalMessageLength);
-
-        // Remove processed message from buffer
-        inputBuffer = inputBuffer.slice(totalMessageLength);
-
-        try {
-            const json = JSON.parse(jsonString);
-            // Forward full JSON message string (without headers) to compiler stdin
-            compilerProcess.stdin?.write(JSON.stringify(json) + '\n');
-        } catch (err) {
-            console.error('Failed to parse JSON:', err);
-        }
-    }
-}
-
-// Listen to stdin data, buffer it and process complete messages
-process.stdin.on('data', (chunk) => {
-    inputBuffer += chunk.toString();
-    tryProcessMessages();
+    // Send as LSP-style message to compiler
+    compilerProcess.stdin?.write(JSON.stringify(message) + '\n');
 });
 
 // Forward diagnostics from compiler stdout to LSP client

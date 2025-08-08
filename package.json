@@ -14,8 +14,16 @@
     "languages": [{
       "id": "bolt",
       "aliases": ["Bolt"],
-      "extensions": [".bt"]
-    }]
+      "extensions": [".bt"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [
+      {
+        "language": "bolt",
+        "scopeName": "source.bolt",
+        "path": "./syntaxes/bolt.tmLanguage.json"
+      }
+    ]
   },
   "scripts": {
     "build": "npm run build:compiler && npm run build:server && npm run build:client",
