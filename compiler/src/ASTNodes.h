@@ -55,6 +55,18 @@ typedef struct function_definition_t
     struct type_t* return_type;
 } function_definition_t;
 
+typedef struct argument_list_t
+{
+    struct expression_t* expression;
+    struct argument_list_t* next;
+} argument_list_t;
+
+typedef struct function_call_t
+{
+    char* function_name;
+    struct argument_list_t* args;
+} function_call_t;
+
 typedef struct expression_t
 {
     union {
@@ -67,6 +79,7 @@ typedef struct expression_t
             char* identifier;
             struct expression_t* value;
         } assignment_expression;
+        struct function_call_t* function_call;
         struct literal_t* literal;
         char* identifier;
         struct lamda_t* lamda;
@@ -79,6 +92,7 @@ typedef struct expression_t
         EXPRESSION_IDENTIFIER,
         EXPRESSION_LAMDA,
         EXPRESSION_ASSIGNMENT,
+        EXPRESSION_FUNCTION_CALL,
     } expression_type;
 } expression_t;
 
@@ -114,6 +128,7 @@ typedef struct lamda_t
     struct parameter_list_t* parameter_list;
     struct type_t* return_type;
     struct statement_t* statement;
+    char* name;
 } lamda_t;
 
 typedef struct literal_t
@@ -218,6 +233,7 @@ struct expression_t* create_expression_compound(expression_t* left, operator_t o
 struct expression_t* create_expression_identifier(char* identifier);
 struct expression_t* create_expression_lamda(struct lamda_t* lamda);
 struct expression_t* create_expression_assignment(char* identifier, expression_t* value);
+struct expression_t* create_expression_function_call(struct function_call_t* function_call);
 
 struct statement_t *create_statement_block(struct block_item_t* block);
 struct statement_t* create_statement_return(struct expression_t* expression);
@@ -252,5 +268,23 @@ struct enum_member_t* create_enum_member(char* name, struct enum_member_t* next)
 struct if_statement_t* create_if_statement(struct expression_t* expression, struct statement_t* statement);
 
 struct for_statement_t* create_for_statement(struct statement_t* initializer, struct expression_t* condition, struct statement_t* loop);
+
+struct function_call_t* create_function_call(char* name, struct argument_list_t* args);
+
+struct argument_list_t* create_argument_list(struct expression_t* expression);
+
+typedef struct function_t
+{
+    union {
+        lamda_t* lamda;
+        function_definition_t* function_definition;
+    };
+
+    enum {
+        FUNCTION_DEFINITION,
+        FUNCTION_LAMDA,
+    } functionType;
+    struct function_t* next;
+} function_t;
 
 #endif

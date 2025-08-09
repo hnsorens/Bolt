@@ -36,6 +36,8 @@ void indent() {
     struct if_statement_t* if_statement;
     struct for_statement_t* for_statement;
     struct block_item_t* block_item;
+    struct argument_list_t* arg;
+    struct function_call_t* function_call;
 }
 
 %token FUNCTION CHAR SHORT INT LONG STATIC MUT IMMUT RETURN TYPE STRUCT ENUM UNION IF FOR
@@ -50,16 +52,18 @@ void indent() {
 %type <function_definition> function_definition
 %type <primitive> primitive static_var mutable_var
 %type <type> type
-%type <parameters> parameters parameter parameter_list
+%type <parameters> parameter parameter_list
 %type <lamda_type> lamda_type
 %type <lamda> lamda
 %type <variable_declaration> variable_declaration
 %type <type_definition> type_definition
 %type <struct_member> struct_member struct_members struct_type
 %type <union_member> union_member union_members union_type
-%type <enum_member> enum_type enum_members
+%type <enum_member> enum_type enum_members enum_member
 %type <if_statement> if_statement
 %type <for_statement> for_statement
+%type <arg> arg_list arg
+%type <function_call> function_call
 
 %left '+' '-'
 %left '*' '/'
@@ -98,6 +102,32 @@ block_item:
     | function_definition { $$ = create_block_function_definition($1); }
     | variable_declaration ';' { $$ = create_block_variable_declaration($1); }
     | type_definition ';' { $$ = create_block_type_definition($1); }
+    ;
+
+function_call:
+    IDENTIFIER '(' arg_list ')' { $$ = create_function_call($1, $3); }
+    ;
+
+arg_list:
+    { $$ = NULL; }  // Empty case
+    | arg { $$ = $1; }
+    | arg_list ',' arg {  // Proper recursion (supports 1, 2, 3, ... items
+        if ($1 == NULL) {
+            $$ = $3;  // First item in the list
+        } else {
+            // Append $2 to the end of the list
+            struct argument_list_t *last = $1;
+            while (last->next != NULL) {
+                last = last->next;
+            }
+            last->next = $3;
+            $$ = $1;
+        }
+      }
+    ;
+
+arg:
+    expression { $$ = create_argument_list($1); }
     ;
 
 statement:
@@ -139,7 +169,7 @@ mutable_var:
     ;
 
 function_definition:
-    FUNCTION IDENTIFIER '(' parameters ')' ':' type statement { $$ = create_function_definition($2, $4, $8, $7); }
+    FUNCTION IDENTIFIER '(' parameter_list ')' ':' type statement { $$ = create_function_definition($2, $4, $8, $7); }
     ;
 
 primitive:
@@ -163,10 +193,31 @@ enum_type:
     ;
 
 enum_members:
-    IDENTIFIER { $$ = create_enum_member($1, NULL); }
-    | enum_members ',' enum_members { $1->next = $3; $$ = $1;  }
+    { $$ = NULL; }
+    | enum_members ',' enum_member { 
+        if ($1 == NULL)
+        {
+            $$ = $3;
+        }
+        else
+        {
+            struct enum_member_t* last = $1;
+            while (last->next != NULL)
+            {
+                last = last->next;
+            }
+            last->next = $3;
+            $$ = $1;
+        }
+      }
+    | enum_member { $$ = $1; }
     | enum_members ',' { $$ = $1; }
     ;
+
+enum_member:
+    IDENTIFIER { $$ = create_enum_member($1, NULL); }
+    ;
+    
 
 struct_type:
     STRUCT '{' struct_members '}' { $$ = $3; } 
@@ -177,12 +228,28 @@ union_type:
     ;
 
 lamda_type:
-    '(' parameters ')' ARROW type { $$ = create_type_lamda($2, $5); }
+    '(' parameter_list ')' ARROW type { $$ = create_type_lamda($2, $5); }
     ;
 
 struct_members:
-    struct_member { $$ = $1; }
-    | struct_member struct_member { $1->next = $2; $$ = $1; }
+    { $$ = NULL; }
+    | struct_member { $$ = $1; }
+    | struct_members struct_member { 
+        if ($1 == NULL)
+        {
+            $$ = $2;
+        }
+        else
+        {
+            struct struct_member_t* last = $1;
+            while (last->next != NULL)
+            {
+                last = last->next;
+            }
+            last->next = $2;
+            $$ = $1;
+        }
+     }
     ;
 
 struct_member:
@@ -190,24 +257,48 @@ struct_member:
     ;
 
 union_members:
-    union_member { $$ = $1; }
-    | union_member union_member { $1->next = $2; $$ = $1; }
+    { $$ = NULL; }
+    | union_member { $$ = $1; }
+    | union_members union_member { 
+        if ($1 == NULL)
+        {
+            $$ = $2;
+        }
+        else
+        {
+            struct union_member_t* last = $1;
+            while (last->next != NULL)
+            {
+                last = last->next;
+            }
+            last->next = $2;
+            $$ = $1;
+        }
+     }
     ;
 
 union_member:
     IDENTIFIER ':' type ';' { $$ = create_union_member($1, $3, NULL); }
     ;
 
-parameters:
-      { $$ = NULL; }
-    | parameter_list { $$ = $1; }
-    ;
-
 parameter_list:
-    parameter { $$ = $1; }
+    { $$ = NULL; }
+    | parameter { $$ = $1; }
     | parameter_list ',' parameter {
-          $1->next = $3;
-          $$ = $1;
+        if ($1 == NULL)
+        {
+            $$ = $3;
+        }
+        else
+        {
+            struct parameter_list_t* last = $1;
+            while (last->next != NULL)
+            {
+                last = last->next;
+            }
+            last->next = $3;
+            $$ = $1;
+        }
       }
     ;
 
@@ -216,7 +307,7 @@ parameter:
     ;
 
 lamda:
-    '(' parameters ')' ':' type ARROW statement { $$ = create_lamda($2, $5, $7); }
+    '(' parameter_list ')' ':' type ARROW statement { $$ = create_lamda($2, $5, $7); }
     ;
 
 expression:
@@ -238,6 +329,7 @@ numeric_expression:
         $$ = create_expression_identifier(strdup($1));
         free($1);
     }
+    | function_call { $$ = create_expression_function_call($1);  }
     | numeric_expression '+' numeric_expression {
         $$ = create_expression_compound($1, OPERATOR_PLUS, $3);
     }

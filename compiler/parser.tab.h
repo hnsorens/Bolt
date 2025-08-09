@@ -103,8 +103,10 @@ union YYSTYPE
     struct if_statement_t* if_statement;
     struct for_statement_t* for_statement;
     struct block_item_t* block_item;
+    struct argument_list_t* arg;
+    struct function_call_t* function_call;
 
-#line 108 "parser.tab.h"
+#line 110 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

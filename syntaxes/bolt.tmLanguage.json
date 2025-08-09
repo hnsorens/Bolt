@@ -32,7 +32,7 @@
       "patterns": [
         {
           "name": "keyword.control.bolt",
-          "match": "\\b(immut|mut|static|return|function|type|struct|union|enum)\\b"
+          "match": "\\b(immut|mut|static|return|function|type|struct|union|enum|own|weak|borrow|@)\\b"
         }
       ]
     },

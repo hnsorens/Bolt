@@ -141,43 +141,46 @@ enum yysymbol_kind_t
   YYSYMBOL_25_ = 25,                       /* '*'  */
   YYSYMBOL_26_ = 26,                       /* '/'  */
   YYSYMBOL_27_ = 27,                       /* ';'  */
-  YYSYMBOL_28_ = 28,                       /* '{'  */
-  YYSYMBOL_29_ = 29,                       /* '}'  */
-  YYSYMBOL_30_ = 30,                       /* '('  */
-  YYSYMBOL_31_ = 31,                       /* ')'  */
-  YYSYMBOL_32_ = 32,                       /* '='  */
-  YYSYMBOL_33_ = 33,                       /* ':'  */
-  YYSYMBOL_34_ = 34,                       /* ','  */
+  YYSYMBOL_28_ = 28,                       /* '('  */
+  YYSYMBOL_29_ = 29,                       /* ')'  */
+  YYSYMBOL_30_ = 30,                       /* ','  */
+  YYSYMBOL_31_ = 31,                       /* '{'  */
+  YYSYMBOL_32_ = 32,                       /* '}'  */
+  YYSYMBOL_33_ = 33,                       /* '='  */
+  YYSYMBOL_34_ = 34,                       /* ':'  */
   YYSYMBOL_YYACCEPT = 35,                  /* $accept  */
   YYSYMBOL_input = 36,                     /* input  */
   YYSYMBOL_block_item_list = 37,           /* block_item_list  */
   YYSYMBOL_block_item = 38,                /* block_item  */
-  YYSYMBOL_statement = 39,                 /* statement  */
-  YYSYMBOL_if_statement = 40,              /* if_statement  */
-  YYSYMBOL_for_statement = 41,             /* for_statement  */
-  YYSYMBOL_type_definition = 42,           /* type_definition  */
-  YYSYMBOL_variable_declaration = 43,      /* variable_declaration  */
-  YYSYMBOL_initializer = 44,               /* initializer  */
-  YYSYMBOL_static_var = 45,                /* static_var  */
-  YYSYMBOL_mutable_var = 46,               /* mutable_var  */
-  YYSYMBOL_function_definition = 47,       /* function_definition  */
-  YYSYMBOL_primitive = 48,                 /* primitive  */
-  YYSYMBOL_type = 49,                      /* type  */
-  YYSYMBOL_enum_type = 50,                 /* enum_type  */
-  YYSYMBOL_enum_members = 51,              /* enum_members  */
-  YYSYMBOL_struct_type = 52,               /* struct_type  */
-  YYSYMBOL_union_type = 53,                /* union_type  */
-  YYSYMBOL_lamda_type = 54,                /* lamda_type  */
-  YYSYMBOL_struct_members = 55,            /* struct_members  */
-  YYSYMBOL_struct_member = 56,             /* struct_member  */
-  YYSYMBOL_union_members = 57,             /* union_members  */
-  YYSYMBOL_union_member = 58,              /* union_member  */
-  YYSYMBOL_parameters = 59,                /* parameters  */
-  YYSYMBOL_parameter_list = 60,            /* parameter_list  */
-  YYSYMBOL_parameter = 61,                 /* parameter  */
-  YYSYMBOL_lamda = 62,                     /* lamda  */
-  YYSYMBOL_expression = 63,                /* expression  */
-  YYSYMBOL_numeric_expression = 64         /* numeric_expression  */
+  YYSYMBOL_function_call = 39,             /* function_call  */
+  YYSYMBOL_arg_list = 40,                  /* arg_list  */
+  YYSYMBOL_arg = 41,                       /* arg  */
+  YYSYMBOL_statement = 42,                 /* statement  */
+  YYSYMBOL_if_statement = 43,              /* if_statement  */
+  YYSYMBOL_for_statement = 44,             /* for_statement  */
+  YYSYMBOL_type_definition = 45,           /* type_definition  */
+  YYSYMBOL_variable_declaration = 46,      /* variable_declaration  */
+  YYSYMBOL_initializer = 47,               /* initializer  */
+  YYSYMBOL_static_var = 48,                /* static_var  */
+  YYSYMBOL_mutable_var = 49,               /* mutable_var  */
+  YYSYMBOL_function_definition = 50,       /* function_definition  */
+  YYSYMBOL_primitive = 51,                 /* primitive  */
+  YYSYMBOL_type = 52,                      /* type  */
+  YYSYMBOL_enum_type = 53,                 /* enum_type  */
+  YYSYMBOL_enum_members = 54,              /* enum_members  */
+  YYSYMBOL_enum_member = 55,               /* enum_member  */
+  YYSYMBOL_struct_type = 56,               /* struct_type  */
+  YYSYMBOL_union_type = 57,                /* union_type  */
+  YYSYMBOL_lamda_type = 58,                /* lamda_type  */
+  YYSYMBOL_struct_members = 59,            /* struct_members  */
+  YYSYMBOL_struct_member = 60,             /* struct_member  */
+  YYSYMBOL_union_members = 61,             /* union_members  */
+  YYSYMBOL_union_member = 62,              /* union_member  */
+  YYSYMBOL_parameter_list = 63,            /* parameter_list  */
+  YYSYMBOL_parameter = 64,                 /* parameter  */
+  YYSYMBOL_lamda = 65,                     /* lamda  */
+  YYSYMBOL_expression = 66,                /* expression  */
+  YYSYMBOL_numeric_expression = 67         /* numeric_expression  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -294,7 +297,7 @@ typedef int yytype_uint16;
 
 
 /* Stored state numbers (used for stacks). */
-typedef yytype_int8 yy_state_t;
+typedef yytype_uint8 yy_state_t;
 
 /* State numbers in computations.  */
 typedef int yy_state_fast_t;
@@ -505,16 +508,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   138
+#define YYLAST   143
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  35
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  30
+#define YYNNTS  33
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  65
+#define YYNRULES  74
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  128
+#define YYNSTATES  136
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   277
@@ -535,15 +538,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      30,    31,    25,    23,    34,    24,     2,    26,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,    33,    27,
-       2,    32,     2,     2,     2,     2,     2,     2,     2,     2,
+      28,    29,    25,    23,    30,    24,     2,    26,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,    34,    27,
+       2,    33,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,    28,     2,    29,     2,     2,     2,     2,
+       2,     2,     2,    31,     2,    32,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -563,15 +566,16 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_int16 yyrline[] =
 {
-       0,    72,    72,    78,    79,    95,    96,    97,    98,    99,
-     100,   104,   105,   106,   107,   111,   115,   119,   123,   127,
-     128,   132,   133,   137,   138,   142,   146,   147,   148,   149,
-     153,   154,   155,   156,   157,   158,   162,   166,   167,   168,
-     172,   176,   180,   184,   185,   189,   193,   194,   198,   202,
-     203,   207,   208,   215,   219,   223,   224,   225,   231,   235,
-     241,   244,   247,   250,   253,   254
+       0,    76,    76,    82,    83,    99,   100,   101,   102,   103,
+     104,   108,   112,   113,   114,   130,   134,   135,   136,   137,
+     141,   145,   149,   153,   157,   158,   162,   163,   167,   168,
+     172,   176,   177,   178,   179,   183,   184,   185,   186,   187,
+     188,   192,   196,   197,   213,   214,   218,   223,   227,   231,
+     235,   236,   237,   256,   260,   261,   262,   281,   285,   286,
+     287,   306,   310,   314,   315,   316,   322,   326,   332,   333,
+     336,   339,   342,   345,   346
 };
 #endif
 
@@ -591,14 +595,15 @@ static const char *const yytname[] =
   "SHORT", "INT", "LONG", "STATIC", "MUT", "IMMUT", "RETURN", "TYPE",
   "STRUCT", "ENUM", "UNION", "IF", "FOR", "EQ", "NEQ", "ARROW",
   "INTEGER_LITERAL", "IDENTIFIER", "'+'", "'-'", "'*'", "'/'", "';'",
-  "'{'", "'}'", "'('", "')'", "'='", "':'", "','", "$accept", "input",
-  "block_item_list", "block_item", "statement", "if_statement",
-  "for_statement", "type_definition", "variable_declaration",
-  "initializer", "static_var", "mutable_var", "function_definition",
-  "primitive", "type", "enum_type", "enum_members", "struct_type",
-  "union_type", "lamda_type", "struct_members", "struct_member",
-  "union_members", "union_member", "parameters", "parameter_list",
-  "parameter", "lamda", "expression", "numeric_expression", YY_NULLPTR
+  "'('", "')'", "','", "'{'", "'}'", "'='", "':'", "$accept", "input",
+  "block_item_list", "block_item", "function_call", "arg_list", "arg",
+  "statement", "if_statement", "for_statement", "type_definition",
+  "variable_declaration", "initializer", "static_var", "mutable_var",
+  "function_definition", "primitive", "type", "enum_type", "enum_members",
+  "enum_member", "struct_type", "union_type", "lamda_type",
+  "struct_members", "struct_member", "union_members", "union_member",
+  "parameter_list", "parameter", "lamda", "expression",
+  "numeric_expression", YY_NULLPTR
 };
 
 static const char *
@@ -608,7 +613,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-67)
+#define YYPACT_NINF (-86)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -622,19 +627,20 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -67,     9,    46,   -67,     0,   -67,   -16,    10,    -5,   -67,
-     -67,    16,   -67,   -67,    17,   -67,   -67,   -67,   -67,    25,
-      28,     3,   -67,   -67,    32,    79,    45,    61,    62,    23,
-     -16,    -1,    18,    66,    72,   -67,    68,    58,   -67,   -67,
-     -67,   -67,    74,   -67,    23,    23,    23,    23,    78,   -67,
-      65,    23,    67,   -67,   -67,    65,    75,    78,   -67,   -67,
-      76,    60,    60,   -67,   -67,    77,    80,   -67,   -67,   -67,
-     -67,    84,    85,    86,   -67,    78,   -67,   -67,   -67,   -67,
-     -67,   -67,    58,    49,   -67,    65,   -67,    65,    82,    94,
-      95,    96,    88,   -67,    87,    89,    65,    90,    91,    94,
-     -67,   -11,    92,    93,    96,   104,    49,   -16,   -67,    49,
-      65,   -67,   -67,   -67,    95,    65,   -67,   -67,    65,   -67,
-     -67,   -67,    99,    97,   100,   -67,   -67,   -67
+     -86,    11,    51,   -86,    13,   -86,    -9,    33,    15,   -86,
+     -86,    -5,   -86,    -1,   -86,   -86,   -86,   -86,   -86,   -86,
+     -13,    18,    21,   -86,   -86,    37,   101,    32,    50,    47,
+      65,    -9,    -9,    63,    12,   -86,    41,    87,    73,   -86,
+     -86,   -86,   -86,    66,   -86,    65,    65,    65,    65,    70,
+     -86,    43,    65,    94,    23,   -86,   -86,   -86,    43,    68,
+      70,   -86,   -86,   -86,    74,    49,    49,   -86,   -86,    80,
+      69,   -86,   -86,   -86,   -86,    72,    84,    90,   -86,    70,
+     -86,   -86,   -86,   -86,   -86,   -86,    87,    -7,   -86,    -9,
+     -86,    43,   -86,    43,    88,   106,   107,   108,    77,   -86,
+     -86,   111,    99,    43,   100,   -16,   -86,   -86,   -15,   -86,
+     102,   -14,   -86,   113,    -7,    -9,   -86,    -7,    43,   -86,
+     -86,   107,   -86,    43,   -86,   -86,    43,   -86,   -86,   -86,
+     110,   -86,   112,   -86,   -86,   -86
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -642,74 +648,79 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       3,     0,    21,     1,     0,    22,     0,     0,     0,    16,
-      58,    59,     5,     3,    49,     4,     6,    12,    13,     0,
-       0,     0,     8,    56,     0,    55,     0,     0,     0,     0,
-       0,    21,    59,     0,    50,    51,     0,     0,    10,     9,
-      23,    24,     0,     7,     0,     0,     0,     0,    49,    11,
-       0,     0,     0,    64,    14,     0,     0,     0,    57,    65,
-       0,    60,    61,    62,    63,     0,     0,    26,    27,    28,
-      29,     0,     0,     0,    31,    49,    30,    17,    35,    33,
-      34,    32,     0,     0,    53,     0,    52,     0,     0,     0,
-       0,     0,     0,    15,     0,    19,     0,     0,     0,    43,
-      37,     0,     0,     0,    46,     0,     0,     0,    18,     0,
-       0,    40,    44,    36,    39,     0,    41,    47,     0,    54,
-      20,    25,     0,    38,     0,    42,    45,    48
+       3,     0,    26,     1,     0,    27,     0,     0,     0,    21,
+      66,    67,     5,    58,     3,     4,    68,     6,    17,    18,
+       0,     0,     0,     8,    64,     0,    63,     0,     0,     0,
+       0,    12,     0,    67,     0,    59,     0,     0,    26,    10,
+       9,    28,    29,     0,     7,     0,     0,     0,     0,    58,
+      16,     0,     0,     0,     0,    13,    15,    73,     0,     0,
+       0,    65,    74,    19,     0,    69,    70,    71,    72,     0,
+       0,    31,    32,    33,    34,     0,     0,     0,    36,    58,
+      35,    22,    40,    38,    39,    37,     0,     0,    11,     0,
+      61,     0,    60,     0,     0,    50,    42,    54,     0,    20,
+      14,     0,    24,     0,     0,     0,    51,    46,     0,    44,
+       0,     0,    55,     0,     0,     0,    23,     0,     0,    47,
+      52,    45,    41,     0,    48,    56,     0,    62,    25,    30,
+       0,    43,     0,    49,    53,    57
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -67,   -67,   115,   -67,   -66,   -67,   -67,   -67,   -67,   -67,
-     -67,   -67,   -67,   -67,   -54,   -67,    15,   -67,   -67,   -67,
-     -67,    31,   -67,    29,   -45,   -67,    81,   -67,    -6,   -10
+     -86,   -86,   121,   -86,   -86,   -86,    52,   -85,   -86,   -86,
+     -86,   -86,   -86,   -86,   -86,   -86,   -86,   -57,   -86,   -86,
+      17,   -86,   -86,   -86,   -86,    35,   -86,    31,   -46,    83,
+     -86,    -6,    -8
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,     2,    15,    16,    17,    18,    19,    20,   108,
-      21,    42,    22,    76,    77,    78,   101,    79,    80,    81,
-      98,    99,   103,   104,    33,    34,    35,    23,    24,    25
+       0,     1,     2,    15,    16,    54,    55,    17,    18,    19,
+      20,    21,   116,    22,    43,    23,    80,    81,    82,   108,
+     109,    83,    84,    85,   105,   106,   111,   112,    34,    35,
+      24,    25,    26
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_int16 yytable[] =
 {
-      27,    84,     4,    66,    37,    10,    11,     5,    36,     3,
-       6,     7,    40,    41,    14,     8,     9,    93,   113,    52,
-      10,    11,    26,   114,    53,    29,    12,    13,    54,    14,
-      92,    94,    28,    95,    61,    62,    63,    64,    10,    32,
-     119,    82,   109,   121,    10,    11,    -2,    14,    30,     4,
-      30,    55,    38,    51,     5,    39,   122,     6,     7,    43,
-       6,   124,     8,     9,   125,     8,     9,    10,    11,    67,
-      68,    69,    70,    12,    13,    48,    14,    13,    71,    72,
-      73,    44,    45,    46,    47,    46,    47,    74,    49,    59,
-      44,    45,    46,    47,    50,    75,    60,    56,    83,    58,
-      65,   120,    44,    45,    46,    47,    57,   106,    85,    87,
-      55,    88,    89,    90,    91,    96,    97,   100,   102,   105,
-     111,   107,   116,   110,   118,   115,   126,   127,    31,   123,
-     112,   114,     0,   117,     0,     0,     0,     0,    86
+      28,    90,    99,    70,     6,    37,   104,    36,   110,     8,
+       9,     3,    10,    11,    39,   121,   119,   122,   124,    13,
+      10,    33,    53,    31,    14,    56,    57,    13,    32,   127,
+      41,    42,   129,    98,   101,    27,   102,    65,    66,    67,
+      68,    59,    60,    30,    86,    40,   117,    71,    72,    73,
+      74,    -2,    88,    89,     4,    29,    75,    76,    77,     5,
+      49,   130,     6,     7,    44,    78,   132,     8,     9,   133,
+      61,    79,    10,    11,    47,    48,     4,    50,    12,    13,
+      51,     5,    14,    56,     6,     7,    10,    11,    64,     8,
+       9,    31,    69,    52,    10,    11,    32,    58,    94,    60,
+      12,    13,    91,    95,    14,    63,   113,    60,    93,   128,
+      45,    46,    47,    48,    58,    96,    62,    45,    46,    47,
+      48,    97,   103,    87,    45,    46,    47,    48,   104,   107,
+     110,   114,   115,   126,   118,    38,   123,   134,   131,   135,
+     120,   100,   125,    92
 };
 
 static const yytype_int8 yycheck[] =
 {
-       6,    55,     3,    48,    14,    21,    22,     8,    14,     0,
-      11,    12,     9,    10,    30,    16,    17,    83,    29,    29,
-      21,    22,    22,    34,    30,    30,    27,    28,    29,    30,
-      75,    85,    22,    87,    44,    45,    46,    47,    21,    22,
-     106,    51,    96,   109,    21,    22,     0,    30,    32,     3,
-      32,    33,    27,    30,     8,    27,   110,    11,    12,    27,
-      11,   115,    16,    17,   118,    16,    17,    21,    22,     4,
-       5,     6,     7,    27,    28,    30,    30,    28,    13,    14,
-      15,    23,    24,    25,    26,    25,    26,    22,    27,    31,
-      23,    24,    25,    26,    32,    30,    22,    31,    31,    31,
-      22,   107,    23,    24,    25,    26,    34,    20,    33,    33,
-      33,    31,    28,    28,    28,    33,    22,    22,    22,    31,
-      29,    32,    29,    33,    20,    33,    27,    27,    13,   114,
-      99,    34,    -1,   104,    -1,    -1,    -1,    -1,    57
+       6,    58,    87,    49,    11,    13,    22,    13,    22,    16,
+      17,     0,    21,    22,    27,    30,    32,    32,    32,    28,
+      21,    22,    30,    28,    31,    31,    32,    28,    33,   114,
+       9,    10,   117,    79,    91,    22,    93,    45,    46,    47,
+      48,    29,    30,    28,    52,    27,   103,     4,     5,     6,
+       7,     0,    29,    30,     3,    22,    13,    14,    15,     8,
+      28,   118,    11,    12,    27,    22,   123,    16,    17,   126,
+      29,    28,    21,    22,    25,    26,     3,    27,    27,    28,
+      33,     8,    31,    89,    11,    12,    21,    22,    22,    16,
+      17,    28,    22,    28,    21,    22,    33,    34,    29,    30,
+      27,    28,    34,    31,    31,    32,    29,    30,    34,   115,
+      23,    24,    25,    26,    34,    31,    29,    23,    24,    25,
+      26,    31,    34,    29,    23,    24,    25,    26,    22,    22,
+      22,    20,    33,    20,    34,    14,    34,    27,   121,    27,
+     105,    89,   111,    60
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -717,42 +728,45 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,    36,    37,     0,     3,     8,    11,    12,    16,    17,
-      21,    22,    27,    28,    30,    38,    39,    40,    41,    42,
-      43,    45,    47,    62,    63,    64,    22,    63,    22,    30,
-      32,    37,    22,    59,    60,    61,    63,    64,    27,    27,
-       9,    10,    46,    27,    23,    24,    25,    26,    30,    27,
-      32,    30,    64,    63,    29,    33,    31,    34,    31,    31,
-      22,    64,    64,    64,    64,    22,    59,     4,     5,     6,
-       7,    13,    14,    15,    22,    30,    48,    49,    50,    52,
-      53,    54,    64,    31,    49,    33,    61,    33,    31,    28,
-      28,    28,    59,    39,    49,    49,    33,    22,    55,    56,
-      22,    51,    22,    57,    58,    31,    20,    32,    44,    49,
-      33,    29,    56,    29,    34,    33,    29,    58,    20,    39,
-      63,    39,    49,    51,    49,    49,    27,    27
+      21,    22,    27,    28,    31,    38,    39,    42,    43,    44,
+      45,    46,    48,    50,    65,    66,    67,    22,    66,    22,
+      28,    28,    33,    22,    63,    64,    66,    67,    37,    27,
+      27,     9,    10,    49,    27,    23,    24,    25,    26,    28,
+      27,    33,    28,    67,    40,    41,    66,    66,    34,    29,
+      30,    29,    29,    32,    22,    67,    67,    67,    67,    22,
+      63,     4,     5,     6,     7,    13,    14,    15,    22,    28,
+      51,    52,    53,    56,    57,    58,    67,    29,    29,    30,
+      52,    34,    64,    34,    29,    31,    31,    31,    63,    42,
+      41,    52,    52,    34,    22,    59,    60,    22,    54,    55,
+      22,    61,    62,    29,    20,    33,    47,    52,    34,    32,
+      60,    30,    32,    34,    32,    62,    20,    42,    66,    42,
+      52,    55,    52,    52,    27,    27
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
        0,    35,    36,    37,    37,    38,    38,    38,    38,    38,
-      38,    39,    39,    39,    39,    40,    41,    42,    43,    44,
-      44,    45,    45,    46,    46,    47,    48,    48,    48,    48,
-      49,    49,    49,    49,    49,    49,    50,    51,    51,    51,
-      52,    53,    54,    55,    55,    56,    57,    57,    58,    59,
-      59,    60,    60,    61,    62,    63,    63,    63,    64,    64,
-      64,    64,    64,    64,    64,    64
+      38,    39,    40,    40,    40,    41,    42,    42,    42,    42,
+      43,    44,    45,    46,    47,    47,    48,    48,    49,    49,
+      50,    51,    51,    51,    51,    52,    52,    52,    52,    52,
+      52,    53,    54,    54,    54,    54,    55,    56,    57,    58,
+      59,    59,    59,    60,    61,    61,    61,    62,    63,    63,
+      63,    64,    65,    66,    66,    66,    67,    67,    67,    67,
+      67,    67,    67,    67,    67
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     0,     2,     1,     1,     2,     1,     2,
-       2,     3,     1,     1,     3,     5,     1,     4,     6,     0,
-       2,     0,     1,     1,     1,     8,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     4,     1,     3,     2,
-       4,     4,     5,     1,     2,     4,     1,     2,     4,     0,
-       1,     1,     3,     3,     7,     1,     1,     3,     1,     1,
-       3,     3,     3,     3,     3,     3
+       2,     4,     0,     1,     3,     1,     3,     1,     1,     3,
+       5,     1,     4,     6,     0,     2,     0,     1,     1,     1,
+       8,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     4,     0,     3,     1,     2,     1,     4,     4,     5,
+       0,     1,     2,     4,     0,     1,     2,     4,     0,     1,
+       3,     3,     7,     1,     1,     3,     1,     1,     1,     3,
+       3,     3,     3,     3,     3
 };
 
 
@@ -1216,21 +1230,21 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* input: block_item_list  */
-#line 72 "src/parser.y"
+#line 76 "src/parser.y"
                     {
         ast_root = (yyvsp[0].block_item);
     }
-#line 1224 "parser.tab.c"
+#line 1238 "parser.tab.c"
     break;
 
   case 3: /* block_item_list: %empty  */
-#line 78 "src/parser.y"
+#line 82 "src/parser.y"
     { (yyval.block_item) = NULL; }
-#line 1230 "parser.tab.c"
+#line 1244 "parser.tab.c"
     break;
 
   case 4: /* block_item_list: block_item_list block_item  */
-#line 79 "src/parser.y"
+#line 83 "src/parser.y"
                                  {  // Proper recursion (supports 1, 2, 3, ... items
         if ((yyvsp[-1].block_item) == NULL) {
             (yyval.block_item) = (yyvsp[0].block_item);  // First item in the list
@@ -1244,398 +1258,521 @@ yyreduce:
             (yyval.block_item) = (yyvsp[-1].block_item);
         }
       }
-#line 1248 "parser.tab.c"
+#line 1262 "parser.tab.c"
     break;
 
   case 5: /* block_item: ';'  */
-#line 95 "src/parser.y"
+#line 99 "src/parser.y"
         { (yyval.block_item) = NULL; }
-#line 1254 "parser.tab.c"
+#line 1268 "parser.tab.c"
     break;
 
   case 6: /* block_item: statement  */
-#line 96 "src/parser.y"
+#line 100 "src/parser.y"
                 { (yyval.block_item) = create_block_statement((yyvsp[0].statement)); }
-#line 1260 "parser.tab.c"
+#line 1274 "parser.tab.c"
     break;
 
   case 7: /* block_item: expression ';'  */
-#line 97 "src/parser.y"
+#line 101 "src/parser.y"
                      { (yyval.block_item) = create_block_expression((yyvsp[-1].expression)); }
-#line 1266 "parser.tab.c"
+#line 1280 "parser.tab.c"
     break;
 
   case 8: /* block_item: function_definition  */
-#line 98 "src/parser.y"
+#line 102 "src/parser.y"
                           { (yyval.block_item) = create_block_function_definition((yyvsp[0].function_definition)); }
-#line 1272 "parser.tab.c"
+#line 1286 "parser.tab.c"
     break;
 
   case 9: /* block_item: variable_declaration ';'  */
-#line 99 "src/parser.y"
+#line 103 "src/parser.y"
                                { (yyval.block_item) = create_block_variable_declaration((yyvsp[-1].variable_declaration)); }
-#line 1278 "parser.tab.c"
+#line 1292 "parser.tab.c"
     break;
 
   case 10: /* block_item: type_definition ';'  */
-#line 100 "src/parser.y"
-                          { (yyval.block_item) = create_block_type_definition((yyvsp[-1].type_definition)); }
-#line 1284 "parser.tab.c"
-    break;
-
-  case 11: /* statement: RETURN expression ';'  */
 #line 104 "src/parser.y"
-                          { (yyval.statement) = create_statement_return((yyvsp[-1].expression)); }
-#line 1290 "parser.tab.c"
+                          { (yyval.block_item) = create_block_type_definition((yyvsp[-1].type_definition)); }
+#line 1298 "parser.tab.c"
     break;
 
-  case 12: /* statement: if_statement  */
-#line 105 "src/parser.y"
-                   { (yyval.statement) = create_statement_if((yyvsp[0].if_statement)); }
-#line 1296 "parser.tab.c"
+  case 11: /* function_call: IDENTIFIER '(' arg_list ')'  */
+#line 108 "src/parser.y"
+                                { (yyval.function_call) = create_function_call((yyvsp[-3].str_val), (yyvsp[-1].arg)); }
+#line 1304 "parser.tab.c"
     break;
 
-  case 13: /* statement: for_statement  */
-#line 106 "src/parser.y"
-                    { (yyval.statement) = create_statement_for((yyvsp[0].for_statement)); }
-#line 1302 "parser.tab.c"
+  case 12: /* arg_list: %empty  */
+#line 112 "src/parser.y"
+    { (yyval.arg) = NULL; }
+#line 1310 "parser.tab.c"
     break;
 
-  case 14: /* statement: '{' block_item_list '}'  */
-#line 107 "src/parser.y"
-                              { (yyval.statement) = create_statement_block((yyvsp[-1].block_item)); }
-#line 1308 "parser.tab.c"
+  case 13: /* arg_list: arg  */
+#line 113 "src/parser.y"
+          { (yyval.arg) = (yyvsp[0].arg); }
+#line 1316 "parser.tab.c"
     break;
 
-  case 15: /* if_statement: IF '(' numeric_expression ')' statement  */
-#line 111 "src/parser.y"
-                                            { (yyval.if_statement) = create_if_statement((yyvsp[-2].expression), (yyvsp[0].statement)); }
-#line 1314 "parser.tab.c"
-    break;
-
-  case 16: /* for_statement: FOR  */
-#line 115 "src/parser.y"
-        { (yyval.for_statement) = NULL; }
-#line 1320 "parser.tab.c"
-    break;
-
-  case 17: /* type_definition: TYPE IDENTIFIER '=' type  */
-#line 119 "src/parser.y"
-                             { (yyval.type_definition) = create_type_definition((yyvsp[-2].str_val), (yyvsp[0].type)); }
-#line 1326 "parser.tab.c"
-    break;
-
-  case 18: /* variable_declaration: static_var mutable_var IDENTIFIER ':' type initializer  */
-#line 123 "src/parser.y"
-                                                           { (yyval.variable_declaration) = create_variable_declaration((yyvsp[-5].primitive), (yyvsp[-4].primitive), (yyvsp[-3].str_val), (yyvsp[-1].type), (yyvsp[0].expression)); }
-#line 1332 "parser.tab.c"
-    break;
-
-  case 19: /* initializer: %empty  */
-#line 127 "src/parser.y"
-    { (yyval.expression) = NULL; }
-#line 1338 "parser.tab.c"
-    break;
-
-  case 20: /* initializer: '=' expression  */
-#line 128 "src/parser.y"
-                     { (yyval.expression) = (yyvsp[0].expression); }
-#line 1344 "parser.tab.c"
-    break;
-
-  case 21: /* static_var: %empty  */
-#line 132 "src/parser.y"
-    { (yyval.primitive) = 0; }
-#line 1350 "parser.tab.c"
-    break;
-
-  case 22: /* static_var: STATIC  */
-#line 133 "src/parser.y"
-             { (yyval.primitive) = 1; }
-#line 1356 "parser.tab.c"
-    break;
-
-  case 23: /* mutable_var: MUT  */
-#line 137 "src/parser.y"
-        { (yyval.primitive) = 1; }
-#line 1362 "parser.tab.c"
-    break;
-
-  case 24: /* mutable_var: IMMUT  */
-#line 138 "src/parser.y"
-            { (yyval.primitive) = 0; }
-#line 1368 "parser.tab.c"
-    break;
-
-  case 25: /* function_definition: FUNCTION IDENTIFIER '(' parameters ')' ':' type statement  */
-#line 142 "src/parser.y"
-                                                              { (yyval.function_definition) = create_function_definition((yyvsp[-6].str_val), (yyvsp[-4].parameters), (yyvsp[0].statement), (yyvsp[-1].type)); }
-#line 1374 "parser.tab.c"
-    break;
-
-  case 26: /* primitive: CHAR  */
-#line 146 "src/parser.y"
-         { (yyval.primitive) = PRIMITIVE_CHAR; }
-#line 1380 "parser.tab.c"
-    break;
-
-  case 27: /* primitive: SHORT  */
-#line 147 "src/parser.y"
-            { (yyval.primitive) = PRIMITIVE_SHORT; }
-#line 1386 "parser.tab.c"
-    break;
-
-  case 28: /* primitive: INT  */
-#line 148 "src/parser.y"
-          { (yyval.primitive) = PRIMITIVE_INT; }
-#line 1392 "parser.tab.c"
-    break;
-
-  case 29: /* primitive: LONG  */
-#line 149 "src/parser.y"
-           { (yyval.primitive) = PRIMITIVE_LONG; }
-#line 1398 "parser.tab.c"
-    break;
-
-  case 30: /* type: primitive  */
-#line 153 "src/parser.y"
-              { (yyval.type) = create_primitive_type((yyvsp[0].primitive)); }
-#line 1404 "parser.tab.c"
-    break;
-
-  case 31: /* type: IDENTIFIER  */
-#line 154 "src/parser.y"
-                 { (yyval.type) = create_identifier_type((yyvsp[0].str_val)); }
-#line 1410 "parser.tab.c"
-    break;
-
-  case 32: /* type: lamda_type  */
-#line 155 "src/parser.y"
-                 { (yyval.type) = create_lamda_type((yyvsp[0].lamda_type)); }
-#line 1416 "parser.tab.c"
-    break;
-
-  case 33: /* type: struct_type  */
-#line 156 "src/parser.y"
-                  { (yyval.type) = create_struct_type((yyvsp[0].struct_member)); }
-#line 1422 "parser.tab.c"
-    break;
-
-  case 34: /* type: union_type  */
-#line 157 "src/parser.y"
-                 { (yyval.type) = create_union_type((yyvsp[0].union_member)); }
-#line 1428 "parser.tab.c"
-    break;
-
-  case 35: /* type: enum_type  */
-#line 158 "src/parser.y"
-                { (yyval.type) = create_enum_type((yyvsp[0].enum_member)); }
-#line 1434 "parser.tab.c"
-    break;
-
-  case 36: /* enum_type: ENUM '{' enum_members '}'  */
-#line 162 "src/parser.y"
-                              { (yyval.enum_member) = (yyvsp[-1].enum_member); }
-#line 1440 "parser.tab.c"
-    break;
-
-  case 37: /* enum_members: IDENTIFIER  */
-#line 166 "src/parser.y"
-               { (yyval.enum_member) = create_enum_member((yyvsp[0].str_val), NULL); }
-#line 1446 "parser.tab.c"
-    break;
-
-  case 38: /* enum_members: enum_members ',' enum_members  */
-#line 167 "src/parser.y"
-                                    { (yyvsp[-2].enum_member)->next = (yyvsp[0].enum_member); (yyval.enum_member) = (yyvsp[-2].enum_member);  }
-#line 1452 "parser.tab.c"
-    break;
-
-  case 39: /* enum_members: enum_members ','  */
-#line 168 "src/parser.y"
-                       { (yyval.enum_member) = (yyvsp[-1].enum_member); }
-#line 1458 "parser.tab.c"
-    break;
-
-  case 40: /* struct_type: STRUCT '{' struct_members '}'  */
-#line 172 "src/parser.y"
-                                  { (yyval.struct_member) = (yyvsp[-1].struct_member); }
-#line 1464 "parser.tab.c"
-    break;
-
-  case 41: /* union_type: UNION '{' union_members '}'  */
-#line 176 "src/parser.y"
-                                { (yyval.union_member) = (yyvsp[-1].union_member); }
-#line 1470 "parser.tab.c"
-    break;
-
-  case 42: /* lamda_type: '(' parameters ')' ARROW type  */
-#line 180 "src/parser.y"
-                                  { (yyval.lamda_type) = create_type_lamda((yyvsp[-3].parameters), (yyvsp[0].type)); }
-#line 1476 "parser.tab.c"
-    break;
-
-  case 43: /* struct_members: struct_member  */
-#line 184 "src/parser.y"
-                  { (yyval.struct_member) = (yyvsp[0].struct_member); }
-#line 1482 "parser.tab.c"
-    break;
-
-  case 44: /* struct_members: struct_member struct_member  */
-#line 185 "src/parser.y"
-                                  { (yyvsp[-1].struct_member)->next = (yyvsp[0].struct_member); (yyval.struct_member) = (yyvsp[-1].struct_member); }
-#line 1488 "parser.tab.c"
-    break;
-
-  case 45: /* struct_member: IDENTIFIER ':' type ';'  */
-#line 189 "src/parser.y"
-                            { (yyval.struct_member) = create_struct_member((yyvsp[-3].str_val), (yyvsp[-1].type), NULL); }
-#line 1494 "parser.tab.c"
-    break;
-
-  case 46: /* union_members: union_member  */
-#line 193 "src/parser.y"
-                 { (yyval.union_member) = (yyvsp[0].union_member); }
-#line 1500 "parser.tab.c"
-    break;
-
-  case 47: /* union_members: union_member union_member  */
-#line 194 "src/parser.y"
-                                { (yyvsp[-1].union_member)->next = (yyvsp[0].union_member); (yyval.union_member) = (yyvsp[-1].union_member); }
-#line 1506 "parser.tab.c"
-    break;
-
-  case 48: /* union_member: IDENTIFIER ':' type ';'  */
-#line 198 "src/parser.y"
-                            { (yyval.union_member) = create_union_member((yyvsp[-3].str_val), (yyvsp[-1].type), NULL); }
-#line 1512 "parser.tab.c"
-    break;
-
-  case 49: /* parameters: %empty  */
-#line 202 "src/parser.y"
-      { (yyval.parameters) = NULL; }
-#line 1518 "parser.tab.c"
-    break;
-
-  case 50: /* parameters: parameter_list  */
-#line 203 "src/parser.y"
-                     { (yyval.parameters) = (yyvsp[0].parameters); }
-#line 1524 "parser.tab.c"
-    break;
-
-  case 51: /* parameter_list: parameter  */
-#line 207 "src/parser.y"
-              { (yyval.parameters) = (yyvsp[0].parameters); }
-#line 1530 "parser.tab.c"
-    break;
-
-  case 52: /* parameter_list: parameter_list ',' parameter  */
-#line 208 "src/parser.y"
-                                   {
-          (yyvsp[-2].parameters)->next = (yyvsp[0].parameters);
-          (yyval.parameters) = (yyvsp[-2].parameters);
+  case 14: /* arg_list: arg_list ',' arg  */
+#line 114 "src/parser.y"
+                       {  // Proper recursion (supports 1, 2, 3, ... items
+        if ((yyvsp[-2].arg) == NULL) {
+            (yyval.arg) = (yyvsp[0].arg);  // First item in the list
+        } else {
+            // Append $2 to the end of the list
+            struct argument_list_t *last = (yyvsp[-2].arg);
+            while (last->next != NULL) {
+                last = last->next;
+            }
+            last->next = (yyvsp[0].arg);
+            (yyval.arg) = (yyvsp[-2].arg);
+        }
       }
-#line 1539 "parser.tab.c"
+#line 1334 "parser.tab.c"
     break;
 
-  case 53: /* parameter: IDENTIFIER ':' type  */
-#line 215 "src/parser.y"
-                        { (yyval.parameters) = create_parameter((yyvsp[-2].str_val), (yyvsp[0].type), NULL); }
-#line 1545 "parser.tab.c"
+  case 15: /* arg: expression  */
+#line 130 "src/parser.y"
+               { (yyval.arg) = create_argument_list((yyvsp[0].expression)); }
+#line 1340 "parser.tab.c"
     break;
 
-  case 54: /* lamda: '(' parameters ')' ':' type ARROW statement  */
-#line 219 "src/parser.y"
-                                                { (yyval.lamda) = create_lamda((yyvsp[-5].parameters), (yyvsp[-2].type), (yyvsp[0].statement)); }
-#line 1551 "parser.tab.c"
+  case 16: /* statement: RETURN expression ';'  */
+#line 134 "src/parser.y"
+                          { (yyval.statement) = create_statement_return((yyvsp[-1].expression)); }
+#line 1346 "parser.tab.c"
     break;
 
-  case 55: /* expression: numeric_expression  */
+  case 17: /* statement: if_statement  */
+#line 135 "src/parser.y"
+                   { (yyval.statement) = create_statement_if((yyvsp[0].if_statement)); }
+#line 1352 "parser.tab.c"
+    break;
+
+  case 18: /* statement: for_statement  */
+#line 136 "src/parser.y"
+                    { (yyval.statement) = create_statement_for((yyvsp[0].for_statement)); }
+#line 1358 "parser.tab.c"
+    break;
+
+  case 19: /* statement: '{' block_item_list '}'  */
+#line 137 "src/parser.y"
+                              { (yyval.statement) = create_statement_block((yyvsp[-1].block_item)); }
+#line 1364 "parser.tab.c"
+    break;
+
+  case 20: /* if_statement: IF '(' numeric_expression ')' statement  */
+#line 141 "src/parser.y"
+                                            { (yyval.if_statement) = create_if_statement((yyvsp[-2].expression), (yyvsp[0].statement)); }
+#line 1370 "parser.tab.c"
+    break;
+
+  case 21: /* for_statement: FOR  */
+#line 145 "src/parser.y"
+        { (yyval.for_statement) = NULL; }
+#line 1376 "parser.tab.c"
+    break;
+
+  case 22: /* type_definition: TYPE IDENTIFIER '=' type  */
+#line 149 "src/parser.y"
+                             { (yyval.type_definition) = create_type_definition((yyvsp[-2].str_val), (yyvsp[0].type)); }
+#line 1382 "parser.tab.c"
+    break;
+
+  case 23: /* variable_declaration: static_var mutable_var IDENTIFIER ':' type initializer  */
+#line 153 "src/parser.y"
+                                                           { (yyval.variable_declaration) = create_variable_declaration((yyvsp[-5].primitive), (yyvsp[-4].primitive), (yyvsp[-3].str_val), (yyvsp[-1].type), (yyvsp[0].expression)); }
+#line 1388 "parser.tab.c"
+    break;
+
+  case 24: /* initializer: %empty  */
+#line 157 "src/parser.y"
+    { (yyval.expression) = NULL; }
+#line 1394 "parser.tab.c"
+    break;
+
+  case 25: /* initializer: '=' expression  */
+#line 158 "src/parser.y"
+                     { (yyval.expression) = (yyvsp[0].expression); }
+#line 1400 "parser.tab.c"
+    break;
+
+  case 26: /* static_var: %empty  */
+#line 162 "src/parser.y"
+    { (yyval.primitive) = 0; }
+#line 1406 "parser.tab.c"
+    break;
+
+  case 27: /* static_var: STATIC  */
+#line 163 "src/parser.y"
+             { (yyval.primitive) = 1; }
+#line 1412 "parser.tab.c"
+    break;
+
+  case 28: /* mutable_var: MUT  */
+#line 167 "src/parser.y"
+        { (yyval.primitive) = 1; }
+#line 1418 "parser.tab.c"
+    break;
+
+  case 29: /* mutable_var: IMMUT  */
+#line 168 "src/parser.y"
+            { (yyval.primitive) = 0; }
+#line 1424 "parser.tab.c"
+    break;
+
+  case 30: /* function_definition: FUNCTION IDENTIFIER '(' parameter_list ')' ':' type statement  */
+#line 172 "src/parser.y"
+                                                                  { (yyval.function_definition) = create_function_definition((yyvsp[-6].str_val), (yyvsp[-4].parameters), (yyvsp[0].statement), (yyvsp[-1].type)); }
+#line 1430 "parser.tab.c"
+    break;
+
+  case 31: /* primitive: CHAR  */
+#line 176 "src/parser.y"
+         { (yyval.primitive) = PRIMITIVE_CHAR; }
+#line 1436 "parser.tab.c"
+    break;
+
+  case 32: /* primitive: SHORT  */
+#line 177 "src/parser.y"
+            { (yyval.primitive) = PRIMITIVE_SHORT; }
+#line 1442 "parser.tab.c"
+    break;
+
+  case 33: /* primitive: INT  */
+#line 178 "src/parser.y"
+          { (yyval.primitive) = PRIMITIVE_INT; }
+#line 1448 "parser.tab.c"
+    break;
+
+  case 34: /* primitive: LONG  */
+#line 179 "src/parser.y"
+           { (yyval.primitive) = PRIMITIVE_LONG; }
+#line 1454 "parser.tab.c"
+    break;
+
+  case 35: /* type: primitive  */
+#line 183 "src/parser.y"
+              { (yyval.type) = create_primitive_type((yyvsp[0].primitive)); }
+#line 1460 "parser.tab.c"
+    break;
+
+  case 36: /* type: IDENTIFIER  */
+#line 184 "src/parser.y"
+                 { (yyval.type) = create_identifier_type((yyvsp[0].str_val)); }
+#line 1466 "parser.tab.c"
+    break;
+
+  case 37: /* type: lamda_type  */
+#line 185 "src/parser.y"
+                 { (yyval.type) = create_lamda_type((yyvsp[0].lamda_type)); }
+#line 1472 "parser.tab.c"
+    break;
+
+  case 38: /* type: struct_type  */
+#line 186 "src/parser.y"
+                  { (yyval.type) = create_struct_type((yyvsp[0].struct_member)); }
+#line 1478 "parser.tab.c"
+    break;
+
+  case 39: /* type: union_type  */
+#line 187 "src/parser.y"
+                 { (yyval.type) = create_union_type((yyvsp[0].union_member)); }
+#line 1484 "parser.tab.c"
+    break;
+
+  case 40: /* type: enum_type  */
+#line 188 "src/parser.y"
+                { (yyval.type) = create_enum_type((yyvsp[0].enum_member)); }
+#line 1490 "parser.tab.c"
+    break;
+
+  case 41: /* enum_type: ENUM '{' enum_members '}'  */
+#line 192 "src/parser.y"
+                              { (yyval.enum_member) = (yyvsp[-1].enum_member); }
+#line 1496 "parser.tab.c"
+    break;
+
+  case 42: /* enum_members: %empty  */
+#line 196 "src/parser.y"
+    { (yyval.enum_member) = NULL; }
+#line 1502 "parser.tab.c"
+    break;
+
+  case 43: /* enum_members: enum_members ',' enum_member  */
+#line 197 "src/parser.y"
+                                   { 
+        if ((yyvsp[-2].enum_member) == NULL)
+        {
+            (yyval.enum_member) = (yyvsp[0].enum_member);
+        }
+        else
+        {
+            struct enum_member_t* last = (yyvsp[-2].enum_member);
+            while (last->next != NULL)
+            {
+                last = last->next;
+            }
+            last->next = (yyvsp[0].enum_member);
+            (yyval.enum_member) = (yyvsp[-2].enum_member);
+        }
+      }
+#line 1523 "parser.tab.c"
+    break;
+
+  case 44: /* enum_members: enum_member  */
+#line 213 "src/parser.y"
+                  { (yyval.enum_member) = (yyvsp[0].enum_member); }
+#line 1529 "parser.tab.c"
+    break;
+
+  case 45: /* enum_members: enum_members ','  */
+#line 214 "src/parser.y"
+                       { (yyval.enum_member) = (yyvsp[-1].enum_member); }
+#line 1535 "parser.tab.c"
+    break;
+
+  case 46: /* enum_member: IDENTIFIER  */
+#line 218 "src/parser.y"
+               { (yyval.enum_member) = create_enum_member((yyvsp[0].str_val), NULL); }
+#line 1541 "parser.tab.c"
+    break;
+
+  case 47: /* struct_type: STRUCT '{' struct_members '}'  */
 #line 223 "src/parser.y"
-                       { (yyval.expression) = (yyvsp[0].expression); }
-#line 1557 "parser.tab.c"
+                                  { (yyval.struct_member) = (yyvsp[-1].struct_member); }
+#line 1547 "parser.tab.c"
     break;
 
-  case 56: /* expression: lamda  */
-#line 224 "src/parser.y"
-            { (yyval.expression) = create_expression_lamda((yyvsp[0].lamda)); }
-#line 1563 "parser.tab.c"
+  case 48: /* union_type: UNION '{' union_members '}'  */
+#line 227 "src/parser.y"
+                                { (yyval.union_member) = (yyvsp[-1].union_member); }
+#line 1553 "parser.tab.c"
     break;
 
-  case 57: /* expression: '(' expression ')'  */
-#line 225 "src/parser.y"
-                         {
-        (yyval.expression) = (yyvsp[-1].expression);  // Just return inner expression
-    }
+  case 49: /* lamda_type: '(' parameter_list ')' ARROW type  */
+#line 231 "src/parser.y"
+                                      { (yyval.lamda_type) = create_type_lamda((yyvsp[-3].parameters), (yyvsp[0].type)); }
+#line 1559 "parser.tab.c"
+    break;
+
+  case 50: /* struct_members: %empty  */
+#line 235 "src/parser.y"
+    { (yyval.struct_member) = NULL; }
+#line 1565 "parser.tab.c"
+    break;
+
+  case 51: /* struct_members: struct_member  */
+#line 236 "src/parser.y"
+                    { (yyval.struct_member) = (yyvsp[0].struct_member); }
 #line 1571 "parser.tab.c"
     break;
 
-  case 58: /* numeric_expression: INTEGER_LITERAL  */
-#line 231 "src/parser.y"
+  case 52: /* struct_members: struct_members struct_member  */
+#line 237 "src/parser.y"
+                                   { 
+        if ((yyvsp[-1].struct_member) == NULL)
+        {
+            (yyval.struct_member) = (yyvsp[0].struct_member);
+        }
+        else
+        {
+            struct struct_member_t* last = (yyvsp[-1].struct_member);
+            while (last->next != NULL)
+            {
+                last = last->next;
+            }
+            last->next = (yyvsp[0].struct_member);
+            (yyval.struct_member) = (yyvsp[-1].struct_member);
+        }
+     }
+#line 1592 "parser.tab.c"
+    break;
+
+  case 53: /* struct_member: IDENTIFIER ':' type ';'  */
+#line 256 "src/parser.y"
+                            { (yyval.struct_member) = create_struct_member((yyvsp[-3].str_val), (yyvsp[-1].type), NULL); }
+#line 1598 "parser.tab.c"
+    break;
+
+  case 54: /* union_members: %empty  */
+#line 260 "src/parser.y"
+    { (yyval.union_member) = NULL; }
+#line 1604 "parser.tab.c"
+    break;
+
+  case 55: /* union_members: union_member  */
+#line 261 "src/parser.y"
+                   { (yyval.union_member) = (yyvsp[0].union_member); }
+#line 1610 "parser.tab.c"
+    break;
+
+  case 56: /* union_members: union_members union_member  */
+#line 262 "src/parser.y"
+                                 { 
+        if ((yyvsp[-1].union_member) == NULL)
+        {
+            (yyval.union_member) = (yyvsp[0].union_member);
+        }
+        else
+        {
+            struct union_member_t* last = (yyvsp[-1].union_member);
+            while (last->next != NULL)
+            {
+                last = last->next;
+            }
+            last->next = (yyvsp[0].union_member);
+            (yyval.union_member) = (yyvsp[-1].union_member);
+        }
+     }
+#line 1631 "parser.tab.c"
+    break;
+
+  case 57: /* union_member: IDENTIFIER ':' type ';'  */
+#line 281 "src/parser.y"
+                            { (yyval.union_member) = create_union_member((yyvsp[-3].str_val), (yyvsp[-1].type), NULL); }
+#line 1637 "parser.tab.c"
+    break;
+
+  case 58: /* parameter_list: %empty  */
+#line 285 "src/parser.y"
+    { (yyval.parameters) = NULL; }
+#line 1643 "parser.tab.c"
+    break;
+
+  case 59: /* parameter_list: parameter  */
+#line 286 "src/parser.y"
+                { (yyval.parameters) = (yyvsp[0].parameters); }
+#line 1649 "parser.tab.c"
+    break;
+
+  case 60: /* parameter_list: parameter_list ',' parameter  */
+#line 287 "src/parser.y"
+                                   {
+        if ((yyvsp[-2].parameters) == NULL)
+        {
+            (yyval.parameters) = (yyvsp[0].parameters);
+        }
+        else
+        {
+            struct parameter_list_t* last = (yyvsp[-2].parameters);
+            while (last->next != NULL)
+            {
+                last = last->next;
+            }
+            last->next = (yyvsp[0].parameters);
+            (yyval.parameters) = (yyvsp[-2].parameters);
+        }
+      }
+#line 1670 "parser.tab.c"
+    break;
+
+  case 61: /* parameter: IDENTIFIER ':' type  */
+#line 306 "src/parser.y"
+                        { (yyval.parameters) = create_parameter((yyvsp[-2].str_val), (yyvsp[0].type), NULL); }
+#line 1676 "parser.tab.c"
+    break;
+
+  case 62: /* lamda: '(' parameter_list ')' ':' type ARROW statement  */
+#line 310 "src/parser.y"
+                                                    { (yyval.lamda) = create_lamda((yyvsp[-5].parameters), (yyvsp[-2].type), (yyvsp[0].statement)); }
+#line 1682 "parser.tab.c"
+    break;
+
+  case 63: /* expression: numeric_expression  */
+#line 314 "src/parser.y"
+                       { (yyval.expression) = (yyvsp[0].expression); }
+#line 1688 "parser.tab.c"
+    break;
+
+  case 64: /* expression: lamda  */
+#line 315 "src/parser.y"
+            { (yyval.expression) = create_expression_lamda((yyvsp[0].lamda)); }
+#line 1694 "parser.tab.c"
+    break;
+
+  case 65: /* expression: '(' expression ')'  */
+#line 316 "src/parser.y"
+                         {
+        (yyval.expression) = (yyvsp[-1].expression);  // Just return inner expression
+    }
+#line 1702 "parser.tab.c"
+    break;
+
+  case 66: /* numeric_expression: INTEGER_LITERAL  */
+#line 322 "src/parser.y"
                       {
         literal_t* lit = create_literal_int((yyvsp[0].int_val));
         (yyval.expression) = create_expression_literal(lit);
     }
-#line 1580 "parser.tab.c"
+#line 1711 "parser.tab.c"
     break;
 
-  case 59: /* numeric_expression: IDENTIFIER  */
-#line 235 "src/parser.y"
+  case 67: /* numeric_expression: IDENTIFIER  */
+#line 326 "src/parser.y"
                  {
         // For now, treat identifiers as strings in literals or extend expression_t to support identifiers properly
         // To fully support identifiers, you'd want a separate AST node type for them
         (yyval.expression) = create_expression_identifier(strdup((yyvsp[0].str_val)));
         free((yyvsp[0].str_val));
     }
-#line 1591 "parser.tab.c"
+#line 1722 "parser.tab.c"
     break;
 
-  case 60: /* numeric_expression: numeric_expression '+' numeric_expression  */
-#line 241 "src/parser.y"
+  case 68: /* numeric_expression: function_call  */
+#line 332 "src/parser.y"
+                    { (yyval.expression) = create_expression_function_call((yyvsp[0].function_call));  }
+#line 1728 "parser.tab.c"
+    break;
+
+  case 69: /* numeric_expression: numeric_expression '+' numeric_expression  */
+#line 333 "src/parser.y"
                                                 {
         (yyval.expression) = create_expression_compound((yyvsp[-2].expression), OPERATOR_PLUS, (yyvsp[0].expression));
     }
-#line 1599 "parser.tab.c"
+#line 1736 "parser.tab.c"
     break;
 
-  case 61: /* numeric_expression: numeric_expression '-' numeric_expression  */
-#line 244 "src/parser.y"
+  case 70: /* numeric_expression: numeric_expression '-' numeric_expression  */
+#line 336 "src/parser.y"
                                                 {
         (yyval.expression) = create_expression_compound((yyvsp[-2].expression), OPERATOR_MINUS, (yyvsp[0].expression));
     }
-#line 1607 "parser.tab.c"
+#line 1744 "parser.tab.c"
     break;
 
-  case 62: /* numeric_expression: numeric_expression '*' numeric_expression  */
-#line 247 "src/parser.y"
+  case 71: /* numeric_expression: numeric_expression '*' numeric_expression  */
+#line 339 "src/parser.y"
                                                 {
         (yyval.expression) = create_expression_compound((yyvsp[-2].expression), OPERATOR_MULTIPLY, (yyvsp[0].expression));
     }
-#line 1615 "parser.tab.c"
+#line 1752 "parser.tab.c"
     break;
 
-  case 63: /* numeric_expression: numeric_expression '/' numeric_expression  */
-#line 250 "src/parser.y"
+  case 72: /* numeric_expression: numeric_expression '/' numeric_expression  */
+#line 342 "src/parser.y"
                                                 {
         (yyval.expression) = create_expression_compound((yyvsp[-2].expression), OPERATOR_DIVIDE, (yyvsp[0].expression));
     }
-#line 1623 "parser.tab.c"
+#line 1760 "parser.tab.c"
     break;
 
-  case 64: /* numeric_expression: IDENTIFIER '=' expression  */
-#line 253 "src/parser.y"
+  case 73: /* numeric_expression: IDENTIFIER '=' expression  */
+#line 345 "src/parser.y"
                                 { (yyval.expression) = create_expression_assignment((yyvsp[-2].str_val), (yyvsp[0].expression)); }
-#line 1629 "parser.tab.c"
+#line 1766 "parser.tab.c"
     break;
 
-  case 65: /* numeric_expression: '(' numeric_expression ')'  */
-#line 254 "src/parser.y"
+  case 74: /* numeric_expression: '(' numeric_expression ')'  */
+#line 346 "src/parser.y"
                                  { (yyval.expression) = (yyvsp[-1].expression); }
-#line 1635 "parser.tab.c"
+#line 1772 "parser.tab.c"
     break;
 
 
-#line 1639 "parser.tab.c"
+#line 1776 "parser.tab.c"
 
       default: break;
     }
@@ -1828,7 +1965,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 257 "src/parser.y"
+#line 349 "src/parser.y"
 
 
 void yyerror(const char *s) {

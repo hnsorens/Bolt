@@ -113,12 +113,36 @@ struct expression_t* create_expression_lamda(struct lamda_t* lamda)
     return expression;
 }
 
+struct expression_t* create_expression_function_call(struct function_call_t* function_call)
+{
+    struct expression_t* expression = (struct expression_t*)malloc(sizeof(expression_t));
+    expression->expression_type = EXPRESSION_FUNCTION_CALL;
+    expression->function_call = function_call;
+    return expression;
+}
+
 struct expression_t* create_expression_identifier(char* identifier)
 {
     struct expression_t* expression = (struct expression_t*)malloc(sizeof(expression_t));
     expression->expression_type = EXPRESSION_IDENTIFIER;
     expression->identifier = identifier;
     return expression;
+}
+
+struct function_call_t* create_function_call(char* name, struct argument_list_t* args)
+{
+    struct function_call_t* function_call = (struct function_call_t*)malloc(sizeof(function_call_t));
+    function_call->function_name = name;
+    function_call->args = args;
+    return function_call;
+}
+
+struct argument_list_t* create_argument_list(struct expression_t* expression)
+{
+    struct argument_list_t* args = (struct argument_list_t*)malloc(sizeof(argument_list_t));
+    args->expression = expression;
+    args->next = NULL;
+    return args;
 }
 
 struct literal_t* create_literal_int(long value_int)
@@ -335,6 +359,7 @@ void print_union_member(int tabs, union_member_t* member);
 void print_if_statement(int tabs, if_statement_t* if_statement);
 void print_for_statement(int tabs, for_statement_t* for_statement);
 void print_block_item(int tabs, struct block_item_t* block);
+void print_args(int tabs, argument_list_t* args);
 
 
 void print_block_item(int tabs, struct block_item_t* block)
@@ -413,6 +438,15 @@ void print_operator(int tabs, operator_t operator)
     }
 }
 
+void print_args(int tabs, argument_list_t* args)
+{
+    if (!args) return;
+    print_tabs(tabs);
+    fprintf(stderr, "ARG\n");
+    print_expression(tabs + 1, args->expression);
+    print_args(tabs, args->next);
+}
+
 void print_expression(int tabs, expression_t* expression)
 {
     if (!expression) return;
@@ -439,6 +473,10 @@ void print_expression(int tabs, expression_t* expression)
         case EXPRESSION_ASSIGNMENT:
             fprintf(stderr, "assignment) (%s)\n", expression->assignment_expression.identifier);
             print_expression(tabs + 1, expression->assignment_expression.value);
+            break;
+        case EXPRESSION_FUNCTION_CALL:
+            fprintf(stderr, "function call) (%s)\n", expression->function_call->function_name);
+            print_args(tabs + 1, expression->function_call->args);
             break;
     }
 }

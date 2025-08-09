@@ -17,6 +17,11 @@ extern void print_block_item(int tabs, struct block_item_t* statement);
 extern int yyparse();
 extern struct block_item_t *ast_root;
 
+extern void generate_code(FILE* file, struct block_item_t* item);
+
+extern function_t* function_head;
+extern function_t* function_tail;
+
 char* read_line() {
     size_t size = 1024;
     char* buffer = malloc(size);
@@ -80,6 +85,11 @@ int main(int argc, char* argv[]) {
             }
 
             print_block_item(0, ast_root);
+
+            function_head = NULL;
+            function_tail = NULL;
+
+            generate_code(stderr, ast_root);
 
             fflush(stderr);
 
